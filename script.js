@@ -1,0 +1,11 @@
+const menuBtn=document.getElementById('menuBtn');
+const nav=document.getElementById('nav');
+menuBtn?.addEventListener('click',()=>{const opened=nav.classList.toggle('open');menuBtn.setAttribute('aria-expanded',String(opened));menuBtn.textContent=opened?'×':'☰'});
+nav?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');menuBtn?.setAttribute('aria-expanded','false');if(menuBtn)menuBtn.textContent='☰'}));
+document.querySelectorAll('[data-service]').forEach(a=>a.addEventListener('click',()=>{const select=document.getElementById('layanan');if(select)select.value=a.dataset.service}));
+const date=document.getElementById('tanggal');if(date){const d=new Date();date.min=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
+document.getElementById('year').textContent=new Date().getFullYear();
+document.getElementById('bookingForm')?.addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.currentTarget);const msg=['Halo BeeAyu Lulur & Facial, saya ingin booking treatment.','','Nama: '+f.get('nama'),'Tanggal kunjungan: '+f.get('tanggal'),'Waktu pilihan: '+f.get('waktu'),'Treatment: '+f.get('layanan'),'Catatan: '+(f.get('catatan')||'-'),'','Mohon konfirmasi ketersediaan jadwal. Terima kasih.'].join('\n');window.open('https://wa.me/6285292307000?text='+encodeURIComponent(msg),'_blank','noopener')});
+
+// Slider otomatis: ganti gambar setiap 5 detik; bisa juga dikontrol manual.
+(() => { const c=document.getElementById('heroCarousel'); if(!c)return; const slides=[...c.querySelectorAll('.hero-slide')], dots=[...c.querySelectorAll('.slide-dot')]; let n=0,timer; const show=i=>{n=(i+slides.length)%slides.length;slides.forEach((s,j)=>s.classList.toggle('active',j===n));dots.forEach((d,j)=>d.classList.toggle('active',j===n));}; const restart=()=>{clearInterval(timer);if(!matchMedia('(prefers-reduced-motion: reduce)').matches)timer=setInterval(()=>show(n+1),5000);}; c.querySelector('.slide-prev')?.addEventListener('click',()=>{show(n-1);restart();}); c.querySelector('.slide-next')?.addEventListener('click',()=>{show(n+1);restart();});dots.forEach((d,i)=>d.addEventListener('click',()=>{show(i);restart();}));c.addEventListener('mouseenter',()=>clearInterval(timer));c.addEventListener('mouseleave',restart);show(0);restart();})();
